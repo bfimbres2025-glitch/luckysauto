@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucky's Automotive | Expert Auto Repair & Service</title>
+  <meta name="description" content="Lucky's Automotive — trusted car repair and maintenance. ASE-certified mechanics, honest pricing, and quality work you can count on." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0B1D3A',
+            secondary: '#163160',
+            cta: '#C9982E',
+            'cta-hover': '#A67C1E',
+            surface: '#F8F9FB',
+            heading: '#0B1D3A',
+            body: '#334155',
+            muted: '#64748B',
+            border: '#E2E8F0',
+            accent: '#C9982E',
+            navy: '#071228',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            body: ['"Source Sans 3"', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+
+  <style>
+    /* Base resets & custom styles */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-family: 'Source Sans 3', sans-serif; }
+
+    /* Smooth scroll offset for fixed nav */
+    :target { scroll-margin-top: 100px; }
+
+    /* Hero parallax background */
+    .hero-bg {
+      background:
+        linear-gradient(135deg, rgba(7,18,40,0.95) 0%, rgba(11,29,58,0.90) 50%, rgba(201,152,46,0.12) 100%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs><rect fill="url(%23grid)" width="1440" height="900"/></svg>');
+      background-size: cover;
+    }
+
+    /* Animated gradient border on cards */
+    .service-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 2px;
+      background: linear-gradient(135deg, transparent 40%, #C9982E 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .service-card:hover::before { opacity: 1; }
+
+    /* Counter animation */
+    .counter { font-variant-numeric: tabular-nums; }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered children */
+    .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
+    .reveal-stagger > .reveal:nth-child(2) { transition-delay: 100ms; }
+    .reveal-stagger > .reveal:nth-child(3) { transition-delay: 200ms; }
+    .reveal-stagger > .reveal:nth-child(4) { transition-delay: 300ms; }
+    .reveal-stagger > .reveal:nth-child(5) { transition-delay: 400ms; }
+    .reveal-stagger > .reveal:nth-child(6) { transition-delay: 500ms; }
+
+    /* Floating nav blur */
+    .nav-blur {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+    }
+
+    /* Gold accent line */
+    .accent-line {
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #C9982E, #E8C36A);
+      border-radius: 2px;
+    }
+
+    /* Testimonial card quote */
+    .quote-mark {
+      font-size: 120px;
+      line-height: 1;
+      color: rgba(201, 152, 46, 0.10);
+      font-family: Georgia, serif;
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* CTA pulse ring */
+    .pulse-ring {
+      animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201, 152, 46, 0.4); }
+      50% { box-shadow: 0 0 0 12px rgba(201, 152, 46, 0); }
+    }
+
+    /* Horizontal scroll for mobile services */
+    .services-scroll::-webkit-scrollbar { display: none; }
+    .services-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { transition: none; opacity: 1; transform: none; }
+      .pulse-ring { animation: none; }
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+
+    /* Hero wrench icon animation */
+    .wrench-spin {
+      animation: wrench 3s ease-in-out infinite;
+      transform-origin: center;
+    }
+    @keyframes wrench {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-15deg); }
+      75% { transform: rotate(15deg); }
+    }
+
+    /* Hero logo float */
+    .logo-float {
+      animation: logo-float 6s ease-in-out infinite;
+    }
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* Subtle bg texture */
+    .texture-dots {
+      background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+  </style>
+</head>
+
+<body class="bg-surface text-body font-body antialiased">
+
+  <!-- ============================================ -->
+  <!--  NAVIGATION                                  -->
+  <!-- ============================================ -->
+  <nav id="navbar" class="fixed top-4 left-4 right-4 z-50 nav-blur bg-white/80 border border-border rounded-2xl shadow-lg shadow-black/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3 cursor-pointer group" aria-label="Lucky's Automotive Home">
+          <img src="logo.png" alt="Lucky's Automotive LLC" class="h-12 w-12 rounded-full object-cover ring-2 ring-cta/30 group-hover:ring-cta transition-all duration-200 group-hover:scale-105" width="48" height="48" />
+          <div>
+            <span class="font-display text-2xl tracking-wide text-heading leading-none">LUCKY'S</span>
+            <span class="block text-[10px] uppercase tracking-[0.2em] text-muted font-semibold -mt-0.5">Automotive LLC</span>
+          </div>
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-1">
+          <a href="#services" class="px-4 py-2 text-sm font-semibold text-secondary hover:text-cta transition-colors duration-200 rounded-lg cursor-pointer">Services</a>
+          <a href="#about" class="px-4 py-2 text-sm font-semibold text-secondary hover:text-cta transition-colors duration-200 rounded-lg cursor-pointer">About</a>
+          <a href="#reviews" class="px-4 py-2 text-sm font-semibold text-secondary hover:text-cta transition-colors duration-200 rounded-lg cursor-pointer">Reviews</a>
+          <a href="#contact" class="px-4 py-2 text-sm font-semibold text-secondary hover:text-cta transition-colors duration-200 rounded-lg cursor-pointer">Contact</a>
+          <a href="#contact" class="ml-3 px-5 py-2.5 bg-cta hover:bg-cta-hover text-white text-sm font-bold rounded-xl transition-colors duration-200 cursor-pointer shadow-lg shadow-cta/25">
+            Book Now
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-toggle" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer" aria-label="Toggle menu" aria-expanded="false">
+          <svg id="menu-open-icon" class="w-6 h-6 text-heading" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          <svg id="menu-close-icon" class="w-6 h-6 text-heading hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="md:hidden hidden pb-4">
+        <div class="flex flex-col gap-1 pt-2 border-t border-border">
+          <a href="#services" class="mobile-link px-4 py-3 text-sm font-semibold text-secondary hover:text-cta hover:bg-gray-50 transition-colors duration-200 rounded-lg cursor-pointer">Services</a>
+          <a href="#about" class="mobile-link px-4 py-3 text-sm font-semibold text-secondary hover:text-cta hover:bg-gray-50 transition-colors duration-200 rounded-lg cursor-pointer">About</a>
+          <a href="#reviews" class="mobile-link px-4 py-3 text-sm font-semibold text-secondary hover:text-cta hover:bg-gray-50 transition-colors duration-200 rounded-lg cursor-pointer">Reviews</a>
+          <a href="#contact" class="mobile-link px-4 py-3 text-sm font-semibold text-secondary hover:text-cta hover:bg-gray-50 transition-colors duration-200 rounded-lg cursor-pointer">Contact</a>
+          <a href="#contact" class="mt-2 px-5 py-3 bg-cta hover:bg-cta-hover text-white text-sm font-bold rounded-xl text-center transition-colors duration-200 cursor-pointer">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================ -->
+  <!--  HERO                                        -->
+  <!-- ============================================ -->
+  <section class="hero-bg min-h-screen flex items-center relative overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-amber-500/5 to-transparent pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-surface to-transparent pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 relative z-10">
+      <div class="grid lg:grid-cols-5 gap-12 items-center">
+        <!-- Left: Text (3 cols) -->
+        <div class="lg:col-span-3">
+          <!-- Badge -->
+          <div class="reveal inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/10 rounded-full mb-8">
+            <span class="w-2 h-2 bg-cta rounded-full animate-pulse"></span>
+            <span class="text-sm text-gray-300 font-medium">Inland Empire, CA &mdash; Now Accepting Customers</span>
+          </div>
+
+          <!-- Headline -->
+          <h1 class="reveal font-display text-6xl sm:text-7xl lg:text-8xl text-white tracking-wide leading-[0.95] mb-6">
+            HONEST WORK.<br />
+            <span class="text-cta">FAIR PRICES.</span><br />
+            REAL RESULTS.
+          </h1>
+
+          <!-- Subheading -->
+          <p class="reveal text-lg sm:text-xl text-gray-300 leading-relaxed max-w-xl mb-10">
+            Licensed wholesale dealer, VIN verification, and full-service automobile repair. Quality you can trust in the Inland Empire.
+          </p>
+
+          <!-- CTA Buttons -->
+          <div class="reveal flex flex-col sm:flex-row gap-4">
+            <a href="#contact" class="pulse-ring inline-flex items-center justify-center gap-2 px-8 py-4 bg-cta hover:bg-cta-hover text-white font-bold text-lg rounded-xl transition-colors duration-200 cursor-pointer shadow-2xl shadow-cta/30">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20" height="20">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+              </svg>
+              Schedule Service
+            </a>
+            <a href="tel:+10000000000" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-lg rounded-xl transition-colors duration-200 cursor-pointer backdrop-blur-sm">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20" height="20">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+              </svg>
+              (000) 000-0000
+            </a>
+          </div>
+
+          <!-- Trust badges -->
+          <div class="reveal flex flex-wrap items-center gap-6 mt-12 pt-8 border-t border-white/10">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-cta" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <span class="text-sm text-gray-300 font-medium">5.0 Rating</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-cta" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span class="text-sm text-gray-300 font-medium">Licensed Dealer</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-cta" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+              <span class="text-sm text-gray-300 font-medium">VIN Verification</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Logo showcase (2 cols) -->
+        <div class="lg:col-span-2 reveal flex justify-center lg:justify-end">
+          <div class="relative logo-float">
+            <!-- Glow behind logo -->
+            <div class="absolute inset-0 bg-cta/20 rounded-full blur-3xl scale-110 pointer-events-none"></div>
+            <!-- Logo -->
+            <img src="logo.png" alt="Lucky's Automotive LLC — Licensed Wholesale Dealer, VIN Verification & Automobile Repair, Inland Empire CA"
+              class="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full object-cover ring-4 ring-cta/30 shadow-2xl shadow-black/40"
+              width="384" height="384" />
+            <!-- Decorative ring -->
+            <div class="absolute inset-0 rounded-full border-2 border-dashed border-cta/20 scale-[1.15] pointer-events-none"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!--  SERVICES                                    -->
+  <!-- ============================================ -->
+  <section id="services" class="py-24 sm:py-32 relative texture-dots">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center mb-16">
+        <div class="reveal">
+          <span class="inline-block text-sm font-bold text-cta uppercase tracking-[0.2em] mb-3">What We Do</span>
+          <h2 class="font-display text-5xl sm:text-6xl text-heading tracking-wide mb-4">OUR SERVICES</h2>
+          <div class="accent-line mx-auto mb-6"></div>
+          <p class="text-lg text-muted max-w-2xl mx-auto leading-relaxed">
+            From routine maintenance to complex repairs, we handle it all with precision and care.
+          </p>
+        </div>
+      </div>
+
+      <!-- Services Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
+        <!-- Service 1: Engine -->
+        <div class="reveal service-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group">
+          <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cta group-hover:scale-110 transition-all duration-300">
+            <svg class="w-7 h-7 text-cta group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="28" height="28">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" />
+            </svg>
+          </div>
+          <h3 class="font-display text-2xl text-heading tracking-wide mb-3">ENGINE REPAIR</h3>
+          <p class="text-muted leading-relaxed">Complete engine diagnostics, rebuilds, and performance tuning. We'll get to the root of the problem fast.</p>
+        </div>
+
+        <!-- Service 2: Brakes -->
+        <div class="reveal service-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group">
+          <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cta group-hover:scale-110 transition-all duration-300">
+            <svg class="w-7 h-7 text-cta group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="28" height="28">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.249-8.25-3.286zm0 13.036h.008v.008H12v-.008z" />
+            </svg>
+          </div>
+          <h3 class="font-display text-2xl text-heading tracking-wide mb-3">BRAKE SERVICE</h3>
+          <p class="text-muted leading-relaxed">Pads, rotors, calipers, and brake fluid service. Your safety is our top priority — every time.</p>
+        </div>
+
+        <!-- Service 3: Oil Change -->
+        <div class="reveal service-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group">
+          <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cta group-hover:scale-110 transition-all duration-300">
+            <svg class="w-7 h-7 text-cta group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="28" height="28">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+            </svg>
+          </div>
+          <h3 class="font-display text-2xl text-heading tracking-wide mb-3">OIL CHANGE</h3>
+          <p class="text-muted leading-relaxed">Quick, professional oil changes with premium synthetic and conventional options. Keep your engine healthy.</p>
+        </div>
+
+        <!-- Service 4: Transmission -->
+        <div class="reveal service-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group">
+          <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cta group-hover:scale-110 transition-all duration-300">
+            <svg class="w-7 h-7 text-cta group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="28" height="28">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L6.75 2.904M12 21v-2.25M12 5.25V3" />
+            </svg>
+          </div>
+          <h3 class="font-display text-2xl text-heading tracking-wide mb-3">TRANSMISSION</h3>
+          <p class="text-muted leading-relaxed">Manual and automatic transmission repair, fluid changes, and complete rebuilds by experienced specialists.</p>
+        </div>
+
+        <!-- Service 5: AC / Heating -->
+        <div class="reveal service-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group">
+          <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cta group-hover:scale-110 transition-all duration-300">
+            <svg class="w-7 h-7 text-cta group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="28" height="28">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+            </svg>
+          </div>
+          <h3 class="font-display text-2xl text-heading tracking-wide mb-3">AC & HEATING</h3>
+          <p class="text-muted leading-relaxed">Stay comfortable year-round. Full climate system diagnosis, refrigerant recharge, and component repair.</p>
+        </div>
+
+        <!-- Service 6: Diagnostics -->
+        <div class="reveal service-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group">
+          <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cta group-hover:scale-110 transition-all duration-300">
+            <svg class="w-7 h-7 text-cta group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="28" height="28">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+            </svg>
+          </div>
+          <h3 class="font-display text-2xl text-heading tracking-wide mb-3">DIAGNOSTICS</h3>
+          <p class="text-muted leading-relaxed">State-of-the-art computer diagnostics to pinpoint issues quickly. Check engine light? We'll decode it.</p>
+        </div>
+      </div>
+
+      <!-- More services note -->
+      <div class="reveal text-center mt-12">
+        <p class="text-muted">
+          Plus: VIN verification, wholesale vehicle sales, tire service, electrical systems, and more.
+          <a href="#contact" class="text-cta font-semibold hover:underline cursor-pointer ml-1">Ask us about your needs</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!--  ABOUT / WHY US                              -->
+  <!-- ============================================ -->
+  <section id="about" class="py-24 sm:py-32 bg-navy relative overflow-hidden">
+    <!-- Decorative -->
+    <div class="absolute inset-0 opacity-5">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="about-grid" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="white"/></pattern></defs><rect fill="url(#about-grid)" width="100%" height="100%"/></svg>
+    </div>
+    <div class="absolute top-0 right-0 w-96 h-96 bg-cta/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-72 h-72 bg-cta/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <!-- Left: Text -->
+        <div>
+          <div class="reveal">
+            <span class="inline-block text-sm font-bold text-cta uppercase tracking-[0.2em] mb-3">Why Lucky's</span>
+            <h2 class="font-display text-5xl sm:text-6xl text-white tracking-wide leading-[0.95] mb-6">
+              YOUR RIDE DESERVES<br /><span class="text-cta">THE BEST</span>
+            </h2>
+            <div class="accent-line mb-8"></div>
+          </div>
+
+          <div class="reveal space-y-6">
+            <p class="text-gray-300 text-lg leading-relaxed">
+              At Lucky's Automotive LLC, we treat every vehicle like it's our own. As a licensed wholesale dealer with VIN verification services, we go beyond just repairs — we're your full-service automotive partner in the Inland Empire.
+            </p>
+            <p class="text-gray-400 leading-relaxed">
+              Our experienced technicians use the latest diagnostic equipment and quality parts to ensure your vehicle gets the care it deserves. No upselling, no surprises — just straight talk and quality work.
+            </p>
+          </div>
+
+          <!-- Value props -->
+          <div class="reveal grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
+            <div class="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+              <svg class="w-6 h-6 text-cta shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h4 class="text-white font-semibold">Transparent Pricing</h4>
+                <p class="text-gray-400 text-sm mt-1">Written estimates before any work begins</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+              <svg class="w-6 h-6 text-cta shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h4 class="text-white font-semibold">Licensed Dealer</h4>
+                <p class="text-gray-400 text-sm mt-1">Licensed wholesale dealer you can trust</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+              <svg class="w-6 h-6 text-cta shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h4 class="text-white font-semibold">Quality Parts</h4>
+                <p class="text-gray-400 text-sm mt-1">OEM and premium aftermarket parts only</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+              <svg class="w-6 h-6 text-cta shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h4 class="text-white font-semibold">VIN Verification</h4>
+                <p class="text-gray-400 text-sm mt-1">Official VIN verification services on-site</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Stats -->
+        <div class="reveal">
+          <div class="grid grid-cols-2 gap-6">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-8 text-center hover:bg-white/10 transition-colors duration-300">
+              <span class="counter font-display text-5xl sm:text-6xl text-cta" data-target="15">0</span>
+              <span class="font-display text-5xl sm:text-6xl text-cta">+</span>
+              <p class="text-gray-300 font-medium mt-2">Years Experience</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-8 text-center hover:bg-white/10 transition-colors duration-300">
+              <span class="counter font-display text-5xl sm:text-6xl text-white" data-target="10000">0</span>
+              <span class="font-display text-5xl sm:text-6xl text-white">+</span>
+              <p class="text-gray-300 font-medium mt-2">Cars Serviced</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-8 text-center hover:bg-white/10 transition-colors duration-300">
+              <span class="counter font-display text-5xl sm:text-6xl text-white" data-target="5">0</span>
+              <span class="font-display text-5xl sm:text-6xl text-white">.0</span>
+              <svg class="w-6 h-6 text-yellow-400 mx-auto mt-1" fill="currentColor" viewBox="0 0 20 20" width="24" height="24"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <p class="text-gray-300 font-medium mt-2">Google Rating</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-8 text-center hover:bg-white/10 transition-colors duration-300">
+              <span class="counter font-display text-5xl sm:text-6xl text-white" data-target="98">0</span>
+              <span class="font-display text-5xl sm:text-6xl text-white">%</span>
+              <p class="text-gray-300 font-medium mt-2">Would Recommend</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!--  PROCESS                                     -->
+  <!-- ============================================ -->
+  <section class="py-24 sm:py-32 bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <div class="reveal">
+          <span class="inline-block text-sm font-bold text-cta uppercase tracking-[0.2em] mb-3">Simple Process</span>
+          <h2 class="font-display text-5xl sm:text-6xl text-heading tracking-wide mb-4">HOW IT WORKS</h2>
+          <div class="accent-line mx-auto"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 reveal-stagger">
+        <div class="reveal text-center relative">
+          <div class="w-16 h-16 bg-cta text-navy font-display text-3xl rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-cta/25">1</div>
+          <h3 class="font-display text-xl text-heading tracking-wide mb-2">CALL OR BOOK</h3>
+          <p class="text-muted text-sm leading-relaxed">Schedule online or give us a call. We'll find a time that works for you.</p>
+          <div class="hidden md:block absolute top-8 left-[60%] w-[80%] border-t-2 border-dashed border-border"></div>
+        </div>
+        <div class="reveal text-center relative">
+          <div class="w-16 h-16 bg-navy text-white font-display text-3xl rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-navy/25">2</div>
+          <h3 class="font-display text-xl text-heading tracking-wide mb-2">DIAGNOSE</h3>
+          <p class="text-muted text-sm leading-relaxed">We inspect your vehicle and explain exactly what it needs. No mystery fees.</p>
+          <div class="hidden md:block absolute top-8 left-[60%] w-[80%] border-t-2 border-dashed border-border"></div>
+        </div>
+        <div class="reveal text-center relative">
+          <div class="w-16 h-16 bg-navy text-white font-display text-3xl rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-navy/25">3</div>
+          <h3 class="font-display text-xl text-heading tracking-wide mb-2">APPROVE & FIX</h3>
+          <p class="text-muted text-sm leading-relaxed">You approve the estimate, and our technicians get to work right away.</p>
+          <div class="hidden md:block absolute top-8 left-[60%] w-[80%] border-t-2 border-dashed border-border"></div>
+        </div>
+        <div class="reveal text-center">
+          <div class="w-16 h-16 bg-cta text-navy font-display text-3xl rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-cta/25">4</div>
+          <h3 class="font-display text-xl text-heading tracking-wide mb-2">HIT THE ROAD</h3>
+          <p class="text-muted text-sm leading-relaxed">Pick up your car, ready to go. With our warranty, you drive with confidence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!--  TESTIMONIALS                                -->
+  <!-- ============================================ -->
+  <section id="reviews" class="py-24 sm:py-32 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <div class="reveal">
+          <span class="inline-block text-sm font-bold text-cta uppercase tracking-[0.2em] mb-3">Testimonials</span>
+          <h2 class="font-display text-5xl sm:text-6xl text-heading tracking-wide mb-4">WHAT CUSTOMERS SAY</h2>
+          <div class="accent-line mx-auto"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal-stagger">
+        <!-- Review 1 -->
+        <div class="reveal relative bg-surface rounded-2xl p-8 border border-border hover:shadow-lg transition-shadow duration-300">
+          <div class="quote-mark">"</div>
+          <div class="relative z-10">
+            <div class="flex gap-1 mb-4">
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-body leading-relaxed mb-6">"Took my truck in for a weird noise and they diagnosed it within an hour. Fair price, quick turnaround, and they even washed it before I picked it up. This is my shop for life."</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-white font-bold text-sm">JM</div>
+              <div>
+                <p class="font-semibold text-heading text-sm">Customer Name</p>
+                <p class="text-muted text-xs">Verified Google Review</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="reveal relative bg-surface rounded-2xl p-8 border border-border hover:shadow-lg transition-shadow duration-300">
+          <div class="quote-mark">"</div>
+          <div class="relative z-10">
+            <div class="flex gap-1 mb-4">
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-body leading-relaxed mb-6">"Finally found an honest mechanic. They showed me exactly what was wrong, didn't try to sell me stuff I didn't need, and got my car back to me the same day. Can't recommend enough."</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-cta rounded-full flex items-center justify-center text-white font-bold text-sm">SK</div>
+              <div>
+                <p class="font-semibold text-heading text-sm">Customer Name</p>
+                <p class="text-muted text-xs">Verified Google Review</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="reveal relative bg-surface rounded-2xl p-8 border border-border hover:shadow-lg transition-shadow duration-300">
+          <div class="quote-mark">"</div>
+          <div class="relative z-10">
+            <div class="flex gap-1 mb-4">
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" width="20" height="20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-body leading-relaxed mb-6">"I've been bringing both my cars here for years. The team is always friendly, professional, and they stand behind their work. Best shop in town, hands down."</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold text-sm">RL</div>
+
+              <div>
+                <p class="font-semibold text-heading text-sm">Customer Name</p>
+                <p class="text-muted text-xs">Verified Google Review</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!--  CONTACT / CTA                               -->
+  <!-- ============================================ -->
+  <section id="contact" class="py-24 sm:py-32 bg-surface texture-dots">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16">
+        <!-- Left: Info -->
+        <div>
+          <div class="reveal">
+            <span class="inline-block text-sm font-bold text-cta uppercase tracking-[0.2em] mb-3">Get In Touch</span>
+            <h2 class="font-display text-5xl sm:text-6xl text-heading tracking-wide leading-[0.95] mb-6">
+              READY TO<br /><span class="text-cta">BOOK?</span>
+            </h2>
+            <div class="accent-line mb-8"></div>
+            <p class="text-muted text-lg leading-relaxed mb-10">
+              Drop by, call, or fill out the form. We'll get back to you within the hour during business hours.
+            </p>
+          </div>
+
+          <!-- Contact Details -->
+          <div class="reveal space-y-6">
+            <a href="tel:+10000000000" class="flex items-center gap-4 group cursor-pointer">
+              <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center group-hover:bg-cta transition-colors duration-200">
+                <svg class="w-6 h-6 text-cta group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm text-muted font-medium">Phone</p>
+                <p class="text-heading font-semibold">(000) 000-0000</p>
+              </div>
+            </a>
+
+            <a href="mailto:info@placeholder.com" class="flex items-center gap-4 group cursor-pointer">
+              <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center group-hover:bg-cta transition-colors duration-200">
+                <svg class="w-6 h-6 text-cta group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm text-muted font-medium">Email</p>
+                <p class="text-heading font-semibold">info@placeholder.com</p>
+              </div>
+            </a>
+
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-cta" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm text-muted font-medium">Address</p>
+                <p class="text-heading font-semibold">1234 Placeholder St, City, ST 00000</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-cta" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm text-muted font-medium">Hours</p>
+                <p class="text-heading font-semibold">Mon-Fri: 8AM - 6PM | Sat: 8AM - 2PM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Form -->
+        <div class="reveal">
+          <form id="contact-form" class="bg-white rounded-2xl p-8 sm:p-10 shadow-lg border border-border" onsubmit="return false;">
+            <h3 class="font-display text-2xl text-heading tracking-wide mb-6">REQUEST AN APPOINTMENT</h3>
+
+            <div class="space-y-5">
+              <div>
+                <label for="name" class="block text-sm font-semibold text-heading mb-2">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="John Doe" required
+                  class="w-full h-12 px-4 bg-surface border border-border rounded-xl text-heading placeholder:text-gray-400 focus:ring-2 focus:ring-cta focus:border-cta outline-none transition-all duration-200" />
+              </div>
+              <div>
+                <label for="phone" class="block text-sm font-semibold text-heading mb-2">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="(000) 000-0000" required
+                  class="w-full h-12 px-4 bg-surface border border-border rounded-xl text-heading placeholder:text-gray-400 focus:ring-2 focus:ring-cta focus:border-cta outline-none transition-all duration-200" />
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-semibold text-heading mb-2">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com"
+                  class="w-full h-12 px-4 bg-surface border border-border rounded-xl text-heading placeholder:text-gray-400 focus:ring-2 focus:ring-cta focus:border-cta outline-none transition-all duration-200" />
+              </div>
+              <div>
+                <label for="service" class="block text-sm font-semibold text-heading mb-2">Service Needed</label>
+                <select id="service" name="service"
+                  class="w-full h-12 px-4 bg-surface border border-border rounded-xl text-heading focus:ring-2 focus:ring-cta focus:border-cta outline-none transition-all duration-200 cursor-pointer">
+                  <option value="">Select a service...</option>
+                  <option>Engine Repair</option>
+                  <option>Brake Service</option>
+                  <option>Oil Change</option>
+                  <option>Transmission</option>
+                  <option>AC & Heating</option>
+                  <option>Diagnostics</option>
+                  <option>Tire Service</option>
+                  <option>VIN Verification</option>
+                  <option>Wholesale / Dealer Services</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label for="message" class="block text-sm font-semibold text-heading mb-2">Tell us more</label>
+                <textarea id="message" name="message" rows="4" placeholder="Describe the issue or what you need..."
+                  class="w-full px-4 py-3 bg-surface border border-border rounded-xl text-heading placeholder:text-gray-400 focus:ring-2 focus:ring-cta focus:border-cta outline-none transition-all duration-200 resize-none"></textarea>
+              </div>
+
+              <button type="submit"
+                class="w-full h-14 bg-cta hover:bg-cta-hover text-white font-bold text-lg rounded-xl transition-colors duration-200 cursor-pointer shadow-lg shadow-cta/25 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20" height="20">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                </svg>
+                Send Request
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!--  FOOTER                                      -->
+  <!-- ============================================ -->
+  <footer class="bg-navy text-gray-400 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <!-- Brand -->
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="logo.png" alt="Lucky's Automotive LLC" class="h-14 w-14 rounded-full object-cover ring-2 ring-cta/30" width="56" height="56" />
+            <div>
+              <span class="font-display text-2xl tracking-wide text-white leading-none">LUCKY'S</span>
+              <span class="block text-[10px] uppercase tracking-[0.2em] text-gray-500 font-semibold -mt-0.5">Automotive LLC</span>
+            </div>
+          </div>
+          <p class="text-sm leading-relaxed max-w-xs">
+            Licensed wholesale dealer, VIN verification &amp; full-service automobile repair. Proudly serving the Inland Empire, CA.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="font-display text-lg text-white tracking-wide mb-4">QUICK LINKS</h4>
+          <nav class="space-y-2">
+            <a href="#services" class="block text-sm hover:text-cta transition-colors duration-200 cursor-pointer">Services</a>
+            <a href="#about" class="block text-sm hover:text-cta transition-colors duration-200 cursor-pointer">About Us</a>
+            <a href="#reviews" class="block text-sm hover:text-cta transition-colors duration-200 cursor-pointer">Reviews</a>
+            <a href="#contact" class="block text-sm hover:text-cta transition-colors duration-200 cursor-pointer">Contact</a>
+          </nav>
+        </div>
+
+        <!-- Hours -->
+        <div>
+          <h4 class="font-display text-lg text-white tracking-wide mb-4">HOURS</h4>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between"><span>Monday - Friday</span><span class="text-white font-medium">8:00 AM - 6:00 PM</span></div>
+            <div class="flex justify-between"><span>Saturday</span><span class="text-white font-medium">8:00 AM - 2:00 PM</span></div>
+            <div class="flex justify-between"><span>Sunday</span><span class="text-gray-500 font-medium">Closed</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-gray-500">&copy; <span id="year"></span> Lucky's Automotive LLC. All rights reserved.</p>
+        <p class="text-sm text-gray-500">1234 Placeholder St, City, ST 00000</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================ -->
+  <!--  SCRIPTS                                     -->
+  <!-- ============================================ -->
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpenIcon = document.getElementById('menu-open-icon');
+    const menuCloseIcon = document.getElementById('menu-close-icon');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      menuOpenIcon.classList.toggle('hidden');
+      menuCloseIcon.classList.toggle('hidden');
+      menuToggle.setAttribute('aria-expanded', !isOpen);
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuOpenIcon.classList.remove('hidden');
+        menuCloseIcon.classList.add('hidden');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Navbar shrink on scroll
+    const navbar = document.getElementById('navbar');
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 50) {
+        navbar.classList.add('shadow-xl');
+        navbar.classList.remove('shadow-lg');
+      } else {
+        navbar.classList.remove('shadow-xl');
+        navbar.classList.add('shadow-lg');
+      }
+      lastScroll = scrollY;
+    }, { passive: true });
+
+    // Scroll reveal with IntersectionObserver
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+    // Counter animation
+    const counterObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const counter = entry.target;
+            const target = parseInt(counter.dataset.target);
+            const duration = 2000;
+            const start = performance.now();
+
+            function easeOutQuart(t) {
+              return 1 - Math.pow(1 - t, 4);
+            }
+
+            function update(now) {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const value = Math.round(easeOutQuart(progress) * target);
+              counter.textContent = value.toLocaleString();
+              if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+            counterObserver.unobserve(counter);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    document.querySelectorAll('.counter').forEach((el) => counterObserver.observe(el));
+
+    // Simple form feedback
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('button[type="submit"]');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Sending...';
+      btn.disabled = true;
+      btn.classList.add('opacity-75');
+
+      setTimeout(() => {
+        btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> Request Sent!';
+        btn.classList.remove('opacity-75');
+        btn.classList.add('bg-emerald-600');
+        btn.classList.remove('bg-cta', 'hover:bg-cta-hover');
+
+        setTimeout(() => {
+          btn.innerHTML = originalHTML;
+          btn.disabled = false;
+          btn.classList.remove('bg-emerald-600');
+          btn.classList.add('bg-cta', 'hover:bg-cta-hover');
+          document.getElementById('contact-form').reset();
+        }, 3000);
+      }, 1500);
+    });
+  </script>
+
+</body>
+</html>
